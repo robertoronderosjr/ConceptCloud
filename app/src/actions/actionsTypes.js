@@ -1,0 +1,3 @@
+export const START_IDEATION = 'START_IDEATION';
+export const RECEIVE_IDEAS = 'RECEIVE_IDEAS';
+export const IDEATION_ERROR = 'IDEATION_ERROR';

@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { startIdeation, receiveIdeas } from '../actions/ideationActions';
+import { startIdeation, receiveIdeas, ideationError } from '../actions/ideationActions';
 
 const IdeationForm = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const IdeationForm = () => {
       });
       dispatch(receiveIdeas(response.data.ideas));
     } catch (error) {
-      console.error('Error generating ideas:', error);
+      dispatch(ideationError(error.toString()));
     }
   };
 
