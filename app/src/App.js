@@ -1,6 +1,6 @@
 import React from 'react';
-import IdeationForm from './components/ideationForm';
-import IdeasDisplay from './components/ideasDisplay';
+import IdeationForm from './components/IdeasForm';
+import IdeasDisplay from './components/IdeasDisplay';
 
 function App() {
   return (
