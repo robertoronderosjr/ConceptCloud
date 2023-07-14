@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles/global.css';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store';

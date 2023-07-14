@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/IdeasForm.css';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { startIdeation, receiveIdeas, ideationError } from '../actions/ideationActions';
@@ -26,7 +27,7 @@ const IdeationForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="ideation-form" onSubmit={handleSubmit}>
       <label>
         Problem Context:
         <textarea name="problemContext" required />
