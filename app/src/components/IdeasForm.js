@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../styles/IdeasForm.css';
 import { useDispatch } from 'react-redux';
 import { startIdeation, receiveIdeas, ideationError } from '../actions/ideationActions';
 import axios from 'axios';
@@ -22,14 +23,14 @@ const IdeasForm = () => {
       problemContext,
       problemStatement,
       technique,
-      temperature,
+      temperature: parseFloat(temperature),
       model,
     };
 
     if (['brainstorming', 'synectics'].includes(technique)) {
-      postData.numIdeas = numIdeas;
-      postData.tokensPerIdea = tokensPerIdea;
-      postData.maximumTokens = maximumTokens;
+      postData.numIdeas = parseInt(numIdeas, 10);
+      postData.tokensPerIdea = parseInt(tokensPerIdea, 10);
+      postData.maximumTokens = parseInt(maximumTokens, 10);
     }
 
     dispatch(startIdeation(problemContext, problemStatement, technique, temperature, model, numIdeas, tokensPerIdea, maximumTokens));
