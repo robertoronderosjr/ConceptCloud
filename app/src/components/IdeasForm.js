@@ -1,16 +1,28 @@
 import React from 'react';
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { startIdeation } from '../actions/ideationActions';
+import { startIdeation, receiveIdeas } from '../actions/ideationActions';
 
 const IdeationForm = () => {
   const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const problemContext = event.target.elements.problemContext.value;
     const problemStatement = event.target.elements.problemStatement.value;
     const technique = event.target.elements.technique.value;
     dispatch(startIdeation(problemContext, problemStatement, technique));
+    try {
+      const baseURL = 'http://127.0.0.1:5001/conceptcloud-38d0c/us-central1'
+      const response = await axios.post(`${baseURL}/ideation`, {
+        problemContext,
+        problemStatement,
+        technique,
+      });
+      dispatch(receiveIdeas(response.data.ideas));
+    } catch (error) {
+      console.error('Error generating ideas:', error);
+    }
   };
 
   return (
