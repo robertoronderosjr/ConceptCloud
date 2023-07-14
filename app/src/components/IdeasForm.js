@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import '../styles/IdeasForm.css';
 import { useDispatch } from 'react-redux';
 import { startIdeation, receiveIdeas, ideationError } from '../actions/ideationActions';
 import axios from 'axios';
+import '../styles/IdeasForm.css';
 
 const IdeasForm = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const IdeasForm = () => {
     const problemContext = event.target.elements.problemContext.value;
     const problemStatement = event.target.elements.problemStatement.value;
     const technique = event.target.elements.technique.value;
-    const temperature = event.target.elements.temperature.value;
+    const temperature = parseFloat(event.target.elements.temperature.value);
     const model = event.target.elements.model.value;
     const numIdeas = event.target.elements.numIdeas?.value;
     const tokensPerIdea = event.target.elements.tokensPerIdea?.value;
@@ -23,7 +23,7 @@ const IdeasForm = () => {
       problemContext,
       problemStatement,
       technique,
-      temperature: parseFloat(temperature),
+      temperature,
       model,
     };
 
@@ -49,17 +49,13 @@ const IdeasForm = () => {
 
   return (
     <form className="ideation-form" onSubmit={handleSubmit}>
-      <label>
-        Problem Context:
-        <textarea name="problemContext" required />
-      </label>
-      <label>
-        Problem Statement:
-        <textarea name="problemStatement" required />
-      </label>
-      <label>
-        Technique:
-        <select name="technique" required onChange={(e) => setTechnique(e.target.value)}>
+      <label htmlFor="problemContext">Problem Context:</label>
+      <textarea id="problemContext" name="problemContext" required />
+      <label htmlFor="problemStatement">Problem Statement:</label>
+      <textarea id="problemStatement" name="problemStatement" required />
+      <div className="input-group">
+        <label htmlFor="technique">Technique:</label>
+        <select id="technique" name="technique" required onChange={(e) => setTechnique(e.target.value)}>
           <option value="">Select a technique...</option>
           <option value="brainstorming">Brainstorming</option>
           <option value="synectics">Synectics</option>
@@ -69,33 +65,33 @@ const IdeasForm = () => {
           <option value="sit">Systematic Inventive Thinking (SIT)</option>
           <option value="sixThinkingHats">Six Thinking Hats</option>
         </select>
-      </label>
-      <label>
-        Temperature:
-        <input type="number" name="temperature" min="0" max="1" step="0.1" defaultValue="0.5" required />
-      </label>
-      <label>
-        Model:
-        <select name="model" required>
+      </div>
+      <div className="input-group">
+        <label htmlFor="temperature">Temperature:</label>
+        <input id="temperature" type="number" name="temperature" min="0" max="1" step="0.1" defaultValue="0.5" required />
+      </div>
+      <div className="input-group">
+        <label htmlFor="model">Model:</label>
+        <select id="model" name="model" required>
           <option value="">Select a model...</option>
           <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
           <option value="gpt-4">gpt-4</option>
         </select>
-      </label>
+      </div>
       {['brainstorming', 'synectics'].includes(technique) && (
         <>
-          <label>
-            Number of Ideas:
-            <input type="number" name="numIdeas" min="1" defaultValue="5" required />
-          </label>
-          <label>
-            Tokens Per Idea:
-            <input type="number" name="tokensPerIdea" min="1" defaultValue="20" required />
-          </label>
-          <label>
-            Maximum Tokens:
-            <input type="number" name="maximumTokens" min="1" defaultValue="500" required />
-          </label>
+          <div className="input-group">
+            <label htmlFor="numIdeas">Number of Ideas:</label>
+            <input id="numIdeas" type="number" name="numIdeas" min="1" defaultValue="5" required />
+          </div>
+          <div className="input-group">
+            <label htmlFor="tokensPerIdea">Tokens Per Idea:</label>
+            <input id="tokensPerIdea" type="number" name="tokensPerIdea" min="1" defaultValue="20" required />
+          </div>
+          <div className="input-group">
+            <label htmlFor="maximumTokens">Maximum Tokens:</label>
+            <input id="maximumTokens" type="number" name="maximumTokens" min="1" defaultValue="500" required />
+          </div>
         </>
       )}
       <button type="submit">Generate Ideas</button>
