@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/IdeasDisplay.css';
 import { useSelector } from 'react-redux';
 
 const IdeasDisplay = () => {
@@ -7,7 +8,7 @@ const IdeasDisplay = () => {
   const error = useSelector((state) => state.ideation.error);
 
   return (
-    <div>
+    <div className="ideas-display">
       {error ? (
         <p>Error: {error}</p>
       ) : loading ? (
