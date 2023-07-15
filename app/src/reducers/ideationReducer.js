@@ -11,6 +11,7 @@ const ideationReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     case RECEIVE_IDEAS:
       return {

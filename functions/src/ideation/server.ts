@@ -98,5 +98,49 @@ app.post("/", async (req, res) => {
     }
 });
 
+app.post("/enhance", async (req, res) => {
+  const { text } = req.body;
+
+  if (!text) {
+    res.status(400).send("Bad Request: Missing text");
+    return;
+  }
+
+  try {
+    const gptResponse = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful assistant. Your task is to enhance the following text to be more descriptive and engaging, correcting any grammatical errors.",
+        },
+        {
+          role: "user",
+          content: text,
+        },
+      ],
+      max_tokens: 60,
+      temperature: 0.5,
+    });
+
+    const enhancedText = gptResponse?.data?.choices?.[0]?.message?.content;
+
+    res.json({ enhancedText });
+  } catch (error) {
+    let errorMessage = "An unexpected error occurred.";
+
+      if (isAxiosError(error)) {
+        console.log("Error status: ", error?.response?.status);
+        console.log("Error data: ", error?.response?.data);
+        errorMessage = `OpenAI API error: ${error?.response?.status}, 
+          ${JSON.stringify(error?.response?.data)}`;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      res.status(500).send(`Internal Server Error: ${errorMessage}`);
+  }
+});
+
 
 export const handler = functions.https.onRequest(app);
