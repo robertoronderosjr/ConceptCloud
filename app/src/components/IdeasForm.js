@@ -7,6 +7,8 @@ import '../styles/IdeasForm.css';
 const IdeasForm = () => {
   const dispatch = useDispatch();
   const [technique, setTechnique] = useState('');
+  const [formState, setFormState] = useState({ problemContext: '', problemStatement: '' });
+  const baseURL = 'http://127.0.0.1:5001/conceptcloud-38d0c/us-central1/ideation'
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,8 +37,7 @@ const IdeasForm = () => {
 
     dispatch(startIdeation(problemContext, problemStatement, technique, temperature, model, numIdeas, tokensPerIdea, maximumTokens));
     try {
-      const baseURL = 'http://127.0.0.1:5001/conceptcloud-38d0c/us-central1'
-      const response = await axios.post(`${baseURL}/ideation`, postData);
+      const response = await axios.post(`/`, postData);
 
       // Check if the ideas field is a string or an array
       let ideas;
@@ -54,12 +55,28 @@ const IdeasForm = () => {
     }
   };
 
+  const handleEnhanceText = async (field) => {
+    // Get the current content of the field
+    const text = formState[field];
+  
+    // Send a request to the new endpoint
+    const response = await axios.post(`${baseURL}/enhance`, { text });
+  
+    // Update the content of the field with the enhanced text
+    setFormState({
+      ...formState,
+      [field]: response.data.enhancedText,
+    });
+  };
+
   return (
     <form className="ideation-form" onSubmit={handleSubmit}>
       <label htmlFor="problemContext">Problem Context:</label>
-      <textarea id="problemContext" name="problemContext" required />
+      <textarea id="problemContext" name="problemContext" required value={formState.problemContext} onChange={(e) => setFormState({ ...formState, problemContext: e.target.value })} />
+      <button type="button" onClick={() => handleEnhanceText('problemContext')}>Enhance Text</button>
       <label htmlFor="problemStatement">Problem Statement:</label>
-      <textarea id="problemStatement" name="problemStatement" required />
+      <textarea id="problemStatement" name="problemStatement" required value={formState.problemStatement} onChange={(e) => setFormState({ ...formState, problemStatement: e.target.value })} />
+      <button type="button" onClick={() => handleEnhanceText('problemStatement')}>Enhance Text</button>
       <div className="options-group">
         <div className="input-group">
           <label htmlFor="technique">Technique:</label>
