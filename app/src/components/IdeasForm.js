@@ -37,7 +37,7 @@ const IdeasForm = () => {
 
     dispatch(startIdeation(problemContext, problemStatement, technique, temperature, model, numIdeas, tokensPerIdea, maximumTokens));
     try {
-      const response = await axios.post(`/`, postData);
+      const response = await axios.post(`${baseURL}/`, postData);
 
       // Check if the ideas field is a string or an array
       let ideas;
